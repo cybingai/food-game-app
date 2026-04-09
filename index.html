@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>食安小尖兵</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap');
-        
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Noto Sans TC', sans-serif;
-            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+            font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+            background: #56ab2f;
             color: #333;
             user-select: none;
             -webkit-user-select: none;
@@ -25,8 +23,7 @@
             height: 100vh;
             max-width: 600px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            background: #ffffff;
             display: flex;
             flex-direction: column;
         }
@@ -36,22 +33,18 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            background: #fff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background: #f8f9fa;
+            border-bottom: 2px solid #eee;
             z-index: 10;
         }
 
         .stat-box {
-            background: #f0f0f0;
+            background: #e9ecef;
             padding: 8px 15px;
             border-radius: 20px;
-            font-size: 20px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 22px;
+            font-weight: bold;
         }
-
         .stat-box.score { color: #E76F51; }
         .stat-box.time { color: #2A9D8F; }
 
@@ -59,15 +52,12 @@
             flex-grow: 1;
             position: relative;
             overflow: hidden;
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background: #fdfdfd;
         }
 
         #tray {
             height: 80px;
-            background: linear-gradient(to bottom, #e0e0e0, #bdbdbd);
+            background: #e0e0e0;
             border-top: 8px solid #8d99ae;
             display: flex;
             justify-content: center;
@@ -75,34 +65,29 @@
             font-size: 22px;
             font-weight: bold;
             color: #555;
-            letter-spacing: 2px;
             z-index: 5;
         }
 
         .food-item {
             position: absolute;
-            font-size: 65px; /* 為長輩放大的圖案 */
+            font-size: 65px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 80px;
             height: 80px;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
             z-index: 2;
         }
-
         .food-item:active { transform: scale(0.9); }
-        .food-item.bad { filter: drop-shadow(0 0 10px rgba(231, 111, 81, 0.8)); }
 
         .floating-text {
             position: absolute;
-            font-weight: 900;
-            font-size: 32px; /* 為長輩放大的加減分提示 */
+            font-weight: bold;
+            font-size: 32px;
             pointer-events: none;
             animation: floatUp 0.8s ease-out forwards;
             z-index: 20;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
         }
 
         @keyframes floatUp {
@@ -110,12 +95,7 @@
             100% { transform: translateY(-60px) scale(1.5); opacity: 0; }
         }
 
-        .danger-flash { animation: flashRed 0.5s ease-out; }
-        @keyframes flashRed {
-            0% { box-shadow: inset 0 0 0 0 rgba(231, 111, 81, 0); }
-            50% { box-shadow: inset 0 0 50px 20px rgba(231, 111, 81, 0.8); }
-            100% { box-shadow: inset 0 0 0 0 rgba(231, 111, 81, 0); }
-        }
+        .danger-flash { background: #ffe6e6 !important; }
 
         .overlay {
             position: absolute;
@@ -138,17 +118,16 @@
 
         .overlay h1 {
             color: #2A9D8F;
-            font-size: 48px; /* 放大標題 */
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 0px #e0e0e0;
+            font-size: 48px;
+            margin-bottom: 10px;
         }
 
         .overlay p {
-            font-size: 24px; /* 放大說明文字 */
+            font-size: 24px;
             font-weight: bold;
             line-height: 1.5;
             color: #444;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .btn {
@@ -156,36 +135,262 @@
             color: white;
             border: none;
             padding: 15px 40px;
-            font-size: 28px; /* 放大按鈕文字 */
+            font-size: 28px;
             font-weight: bold;
             border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(231, 111, 81, 0.4);
             margin-top: 10px;
         }
-        .btn:active { transform: translateY(3px); }
 
         .rules-icons {
             display: flex;
             gap: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .rule-item {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .rule-emoji { font-size: 65px; }
+        .rule-emoji { font-size: 60px; }
         .rule-text {
             font-size: 22px;
-            font-weight: 900;
+            font-weight: bold;
             margin-top: 10px;
             background: white;
-            padding: 5px 15px;
+            padding: 5px 10px;
             border-radius: 10px;
         }
 
         .score-board {
             background: #f8f9fa;
             border: 3px dashed #ccc;
-            border-radius: 2
+            border-radius: 20px;
+            padding: 20px 40px;
+            margin: 20px 0;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="header">
+        <div class="stat-box score">🛡️ <span id="score-display">0</span></div>
+        <div class="stat-box time">⏱️ <span id="time-display">30</span></div>
+    </div>
+
+    <div id="play-area"></div>
+    <div id="tray">✨ 合格食材盛裝區 ✨</div>
+
+    <div id="start-screen" class="overlay">
+        <h1>食安小尖兵</h1>
+        <p><span style="color:#E76F51;">點擊擊碎</span>「黑心食品」<br>讓「合格食材」掉入盤中！</p>
+        
+        <div class="rules-icons">
+            <div class="rule-item">
+                <div class="rule-emoji">🦠🤢</div>
+                <div class="rule-text" style="color: #E76F51; border: 2px solid #E76F51;">點擊擊碎 (+10)</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-emoji">🍎🥬</div>
+                <div class="rule-text" style="color: #2A9D8F; border: 2px solid #2A9D8F;">放過它 (+5)</div>
+            </div>
+        </div>
+        
+        <button class="btn" onclick="startGame()">開始稽查</button>
+    </div>
+
+    <div id="end-screen" class="overlay hidden">
+        <h1 id="end-title">稽查結束</h1>
+        <p id="end-message" style="color: #555;">評語</p>
+        
+        <div class="score-board">
+            <div style="font-size: 24px; color: #555; margin-bottom: 10px;">本次總積分</div>
+            <div style="font-size: 65px; color: #E76F51; font-weight: bold;" id="final-score">0</div>
+            <div style="font-size: 22px; color: #888; margin-top: 15px; font-weight: bold;">
+                ( 本局最高滿分：<span id="max-score">0</span> )
+            </div>
+        </div>
+
+        <button class="btn" onclick="showStartScreen()">再挑戰一次</button>
+    </div>
+</div>
+
+<script>
+    const GOOD_FOODS = ['🍎', '🥬', '🥩', '🐟', '🥛', '🌽', '🍊'];
+    const BAD_FOODS  = ['🦠', '🧪', '🤢', '🪰', '☠️', '🍄'];
+    
+    let score = 0;
+    let maxPossibleScore = 0; 
+    let timeLeft = 30;
+    let gameInterval;
+    let spawnerInterval;
+    let isPlaying = false;
+    let foods = [];
+
+    const playArea = document.getElementById('play-area');
+    const scoreDisplay = document.getElementById('score-display');
+    const timeDisplay = document.getElementById('time-display');
+    const startScreen = document.getElementById('start-screen');
+    const endScreen = document.getElementById('end-screen');
+    const finalScoreDisplay = document.getElementById('final-score');
+    const maxScoreDisplay = document.getElementById('max-score');
+    const endTitle = document.getElementById('end-title');
+    const endMessage = document.getElementById('end-message');
+
+    function showStartScreen() {
+        endScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
+        playArea.innerHTML = '';
+        foods = [];
+    }
+
+    function startGame() {
+        startScreen.classList.add('hidden');
+        endScreen.classList.add('hidden');
+        score = 0; maxPossibleScore = 0; timeLeft = 30; foods = [];
+        playArea.innerHTML = '';
+        updateUI();
+        isPlaying = true;
+        
+        gameInterval = setInterval(() => {
+            timeLeft--; updateUI();
+            if (timeLeft <= 0) endGame();
+        }, 1000);
+
+        spawnFood();
+        requestAnimationFrame(gameLoop);
+    }
+
+    function updateUI() {
+        scoreDisplay.innerText = score;
+        timeDisplay.innerText = timeLeft;
+    }
+
+    function spawnFood() {
+        if (!isPlaying) return;
+
+        const isBad = Math.random() > 0.6;
+        const emojiList = isBad ? BAD_FOODS : GOOD_FOODS;
+        const emoji = emojiList[Math.floor(Math.random() * emojiList.length)];
+        
+        const el = document.createElement('div');
+        el.className = 'food-item';
+        el.innerText = emoji;
+        
+        const maxX = playArea.clientWidth - 80;
+        el.style.left = Math.floor(Math.random() * maxX) + 'px';
+        el.style.top = '-80px';
+        
+        const timeElapsed = 30 - timeLeft; 
+        const speedMultiplier = 1 + (timeElapsed / 30) * 1.5; 
+        const speed = (2 + Math.random() * 2) * speedMultiplier;
+
+        el.ontouchstart = function(e) { handleTap(e, el, isBad); };
+        el.onmousedown = function(e) { handleTap(e, el, isBad); };
+
+        playArea.appendChild(el);
+        foods.push({ el: el, yPos: -80, speed: speed, isBad: isBad, active: true });
+
+        const nextSpawnTime = Math.max(350, 1000 - timeElapsed * 20);
+        spawnerInterval = setTimeout(spawnFood, nextSpawnTime + Math.random() * 200);
+    }
+
+    function handleTap(e, el, isBad) {
+        e.preventDefault();
+        if (!isPlaying || !el.parentNode) return;
+
+        const rect = el.getBoundingClientRect();
+        const playAreaRect = playArea.getBoundingClientRect();
+        const x = rect.left - playAreaRect.left + 40;
+        const y = rect.top - playAreaRect.top + 40;
+
+        if (isBad) {
+            score += 10; maxPossibleScore += 10;
+            showFloatingText(x, y, '+10', '#E76F51');
+        } else {
+            score -= 10; maxPossibleScore += 5;
+            showFloatingText(x, y, '-10', '#555');
+        }
+
+        updateUI();
+        removeFood(el);
+    }
+
+    function gameLoop() {
+        if (!isPlaying) return;
+        const bottomLimit = playArea.clientHeight;
+
+        for (let i = foods.length - 1; i >= 0; i--) {
+            const food = foods[i];
+            if (!food.active) continue;
+
+            food.yPos += food.speed;
+            food.el.style.top = food.yPos + 'px';
+
+            if (food.yPos > bottomLimit - 40) {
+                if (food.isBad) {
+                    score -= 5; maxPossibleScore += 10;
+                    playArea.classList.add('danger-flash');
+                    setTimeout(() => { playArea.classList.remove('danger-flash'); }, 300);
+                    showFloatingText(food.el.offsetLeft + 40, bottomLimit - 60, '漏掉了!', '#D62828');
+                } else {
+                    score += 5; maxPossibleScore += 5;
+                    showFloatingText(food.el.offsetLeft + 40, bottomLimit - 60, '+5', '#2A9D8F');
+                }
+                updateUI();
+                removeFood(food.el);
+            }
+        }
+        requestAnimationFrame(gameLoop);
+    }
+
+    function removeFood(el) {
+        for (let i = 0; i < foods.length; i++) {
+            if (foods[i].el === el) {
+                foods[i].active = false;
+                foods.splice(i, 1);
+                if (el.parentNode) el.parentNode.removeChild(el);
+                break;
+            }
+        }
+    }
+
+    function showFloatingText(x, y, text, color) {
+        const el = document.createElement('div');
+        el.className = 'floating-text'; 
+        el.innerText = text; 
+        el.style.left = x + 'px'; 
+        el.style.top = y + 'px'; 
+        el.style.color = color;
+        playArea.appendChild(el);
+        setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
+    }
+
+    function endGame() {
+        isPlaying = false;
+        clearInterval(gameInterval); clearTimeout(spawnerInterval);
+        endScreen.classList.remove('hidden');
+        finalScoreDisplay.innerText = score;
+        maxScoreDisplay.innerText = maxPossibleScore;
+
+        let ratio = 0;
+        if (maxPossibleScore > 0) {
+             ratio = score / maxPossibleScore;
+        }
+
+        if (ratio >= 0.8) {
+            endTitle.innerText = "🌟 廉能食安之星 🌟"; endTitle.style.color = "#E9C46A";
+            endMessage.innerText = "眼明手快！成功守護餐桌安全！";
+        } else if (ratio >= 0.4) {
+            endTitle.innerText = "👍 稱職的稽查員"; endTitle.style.color = "#2A9D8F";
+            endMessage.innerText = "表現不錯！但別讓黑心食材溜走囉！";
+        } else {
+            endTitle.innerText = "🚨 食安大危機 🚨"; endTitle.style.color = "#E76F51";
+            endMessage.innerText = "漏掉太多了，趕快再挑戰一次！";
+        }
+    }
+</script>
+</body>
+</html>
