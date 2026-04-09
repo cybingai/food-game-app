@@ -59,12 +59,11 @@
             background-size: 40px 40px;
         }
 
-        /* 優化後的具體托盤設計 */
         #tray {
             height: 100px;
             background: linear-gradient(to bottom, #d4d4d4, #a0a0a0);
             border-top: 12px solid #8d99ae;
-            border-radius: 30px 30px 0 0; /* 讓頂部有圓弧感 */
+            border-radius: 30px 30px 0 0; 
             box-shadow: 0 -5px 15px rgba(0,0,0,0.1), inset 0 15px 15px -15px rgba(0,0,0,0.5);
             display: flex;
             justify-content: center;
@@ -161,7 +160,6 @@
         }
         .btn:active { transform: translateY(3px); box-shadow: none; }
 
-        /* 調整說明區塊以容納所有圖案 */
         .rules-icons {
             display: flex;
             gap: 20px;
@@ -179,7 +177,7 @@
             width: 45%;
         }
         .rule-emoji { 
-            font-size: 38px; /* 稍微縮小以放進多個圖案 */
+            font-size: 38px; 
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -219,11 +217,11 @@
 
     <div id="start-screen" class="overlay">
         <h1>食安小尖兵</h1>
-        <p><span style="color:#E76F51;">點擊擊碎</span>「黑心食品」<br>讓「合格食材」掉入盤中！</p>
+        <p><span style="color:#E76F51;">點擊消滅</span>「黑心食品」<br>讓「合格食材」掉入盤中！</p>
         
         <div class="rules-icons">
             <div class="rule-item" style="border: 3px solid #E76F51;">
-                <div class="rule-emoji">🦠 🧪 🤢 🪰 ☠️ 🍄</div>
+                <div class="rule-emoji">🦠 🧪 🤢 🪰 ☠️ 🪳</div>
                 <div class="rule-text" style="color: #E76F51;">點擊擊碎 (+10)</div>
             </div>
             <div class="rule-item" style="border: 3px solid #2A9D8F;">
@@ -252,8 +250,9 @@
 </div>
 
 <script>
+    // 香菇換成了蟑螂
     const GOOD_FOODS = ['🍎', '🥬', '🥩', '🐟', '🥛', '🌽', '🍊'];
-    const BAD_FOODS  = ['🦠', '🧪', '🤢', '🪰', '☠️', '🍄'];
+    const BAD_FOODS  = ['🦠', '🧪', '🤢', '🪰', '☠️', '🪳'];
     
     let score = 0;
     let maxPossibleScore = 0; 
@@ -317,9 +316,10 @@
         el.style.left = Math.floor(Math.random() * maxX) + 'px';
         el.style.top = '-80px';
         
+        // 速度提升：基礎速度從 2 調高為 3，加速倍率也提高了
         const timeElapsed = 30 - timeLeft; 
-        const speedMultiplier = 1 + (timeElapsed / 30) * 1.5; 
-        const speed = (2 + Math.random() * 2) * speedMultiplier;
+        const speedMultiplier = 1 + (timeElapsed / 30) * 2; 
+        const speed = (3 + Math.random() * 3) * speedMultiplier;
 
         el.ontouchstart = function(e) { handleTap(e, el, isBad); };
         el.onmousedown = function(e) { handleTap(e, el, isBad); };
@@ -327,8 +327,9 @@
         playArea.appendChild(el);
         foods.push({ el: el, yPos: -80, speed: speed, isBad: isBad, active: true });
 
-        const nextSpawnTime = Math.max(350, 1000 - timeElapsed * 20);
-        spawnerInterval = setTimeout(spawnFood, nextSpawnTime + Math.random() * 200);
+        // 生成頻率提升：最快生成間隔從 350 縮短為 200
+        const nextSpawnTime = Math.max(200, 800 - timeElapsed * 25);
+        spawnerInterval = setTimeout(spawnFood, nextSpawnTime + Math.random() * 150);
     }
 
     function handleTap(e, el, isBad) {
