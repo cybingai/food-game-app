@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>食安小尖兵 - 黃金平衡版</title>
+    <title>食安小尖兵</title>
+    
+    <link rel="apple-touch-icon" id="apple-icon" href="">
+    <link rel="manifest" id="manifest-link">
+
     <style>
         body {
             margin: 0;
@@ -251,6 +255,45 @@
 </div>
 
 <script>
+    // === 動態生成高品質專屬 APP 圖示 (黃金防護盾+放大鏡+打勾) ===
+    const customIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <defs>
+            <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#a8e063"/><stop offset="100%" stop-color="#2A9D8F"/>
+            </linearGradient>
+            <linearGradient id="shG" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFD166"/><stop offset="100%" stop-color="#E76F51"/>
+            </linearGradient>
+            <filter id="sd">
+                <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#004A3F" flood-opacity="0.4"/>
+            </filter>
+        </defs>
+        <rect width="512" height="512" rx="100" fill="url(#bgG)"/>
+        <path d="M 256 70 C 256 70 390 100 410 120 C 410 270 345 380 256 440 C 167 380 102 270 102 120 C 122 100 256 70 256 70 Z" fill="url(#shG)" filter="url(#sd)"/>
+        <path d="M 256 100 C 256 100 360 125 375 140 C 375 255 320 345 256 395 C 192 345 137 255 137 140 C 152 125 256 100 256 100 Z" fill="#FFF" opacity="0.95"/>
+        <line x1="320" y1="320" x2="410" y2="410" stroke="#333" stroke-width="36" stroke-linecap="round" filter="url(#sd)"/>
+        <circle cx="256" cy="230" r="85" fill="#E0FBFC" stroke="#333" stroke-width="26"/>
+        <path d="M 205 240 L 235 270 L 305 190" fill="none" stroke="#2A9D8F" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+    
+    // 將 SVG 轉為 Data URL 套用到網頁的圖示與安裝檔中
+    const iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(customIconSVG);
+    document.getElementById('apple-icon').href = iconUrl;
+    
+    const manifest = {
+        "name": "食安小尖兵",
+        "short_name": "食安小尖兵",
+        "start_url": ".",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#56ab2f",
+        "icons": [{"src": iconUrl, "sizes": "512x512", "type": "image/svg+xml"}]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+    document.getElementById('manifest-link').href = URL.createObjectURL(blob);
+    // ========================================================
+
+
     const GOOD_FOODS = ['🍎', '🥬', '🥩', '🐟', '🥛', '🌽', '🍊'];
     const BAD_FOODS  = ['🦠', '🧪', '🤢', '🪰', '☠️', '🐛'];
     
@@ -319,7 +362,7 @@
         el.style.left = Math.floor(Math.random() * maxX) + 'px';
         el.style.top = '-80px';
         
-        // 【速度回調】稍微放慢基礎速度，並降低最高加速度
+        // 黃金平衡版速度
         const timeElapsed = 30 - timeLeft; 
         const speedMultiplier = 1 + (timeElapsed / 30) * 1.2; 
         const speed = (3 + Math.random() * 3) * speedMultiplier;
@@ -332,7 +375,6 @@
         playArea.appendChild(el);
         foods.push({ el: el, yPos: -80, speed: speed, isBad: isBad, active: true });
 
-        // 【密度回調】拉長食材出現的間隔時間
         const nextSpawnTime = Math.max(300, 700 - timeElapsed * 15);
         spawnerInterval = setTimeout(spawnFood, nextSpawnTime + Math.random() * 150);
     }
