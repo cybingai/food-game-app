@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>食安小尖兵</title>
+    <title>食安小尖兵 - 黃金平衡版</title>
     <style>
         body {
             margin: 0;
@@ -94,6 +94,7 @@
             width: 80px;
             height: 80px;
             z-index: 2;
+            touch-action: none;
         }
         .food-item:active { transform: scale(0.9); }
 
@@ -230,7 +231,7 @@
             </div>
         </div>
         
-        <button class="btn" onclick="startGame()">極限挑戰</button>
+        <button id="btn-start" class="btn">開始把關</button>
     </div>
 
     <div id="end-screen" class="overlay hidden">
@@ -245,12 +246,11 @@
             </div>
         </div>
 
-        <button class="btn" onclick="showStartScreen()">再挑戰一次</button>
+        <button id="btn-restart" class="btn">再挑戰一次</button>
     </div>
 </div>
 
 <script>
-    // 徹底替換：將害蟲(🐛)加入壞名單，好名單保持新鮮食材
     const GOOD_FOODS = ['🍎', '🥬', '🥩', '🐟', '🥛', '🌽', '🍊'];
     const BAD_FOODS  = ['🦠', '🧪', '🤢', '🪰', '☠️', '🐛'];
     
@@ -271,6 +271,9 @@
     const maxScoreDisplay = document.getElementById('max-score');
     const endTitle = document.getElementById('end-title');
     const endMessage = document.getElementById('end-message');
+
+    document.getElementById('btn-start').addEventListener('click', startGame);
+    document.getElementById('btn-restart').addEventListener('click', showStartScreen);
 
     function showStartScreen() {
         endScreen.classList.add('hidden');
@@ -316,24 +319,25 @@
         el.style.left = Math.floor(Math.random() * maxX) + 'px';
         el.style.top = '-80px';
         
-        // 【速度大幅提升】基礎速度由 2 調高至 4，後期加速來到 3.5 倍！
+        // 【速度回調】稍微放慢基礎速度，並降低最高加速度
         const timeElapsed = 30 - timeLeft; 
-        const speedMultiplier = 1 + (timeElapsed / 30) * 2.5; 
-        const speed = (4 + Math.random() * 4) * speedMultiplier;
+        const speedMultiplier = 1 + (timeElapsed / 30) * 1.2; 
+        const speed = (3 + Math.random() * 3) * speedMultiplier;
 
-        el.ontouchstart = function(e) { handleTap(e, el, isBad); };
-        el.onmousedown = function(e) { handleTap(e, el, isBad); };
+        el.addEventListener('pointerdown', function(e) {
+            e.preventDefault(); 
+            handleTap(el, isBad);
+        });
 
         playArea.appendChild(el);
         foods.push({ el: el, yPos: -80, speed: speed, isBad: isBad, active: true });
 
-        // 【掉落密度大幅提升】最快間隔縮短至 0.1 秒 (100ms)
-        const nextSpawnTime = Math.max(100, 500 - timeElapsed * 20);
-        spawnerInterval = setTimeout(spawnFood, nextSpawnTime + Math.random() * 100);
+        // 【密度回調】拉長食材出現的間隔時間
+        const nextSpawnTime = Math.max(300, 700 - timeElapsed * 15);
+        spawnerInterval = setTimeout(spawnFood, nextSpawnTime + Math.random() * 150);
     }
 
-    function handleTap(e, el, isBad) {
-        e.preventDefault();
+    function handleTap(el, isBad) {
         if (!isPlaying || !el.parentNode) return;
 
         const rect = el.getBoundingClientRect();
@@ -370,3 +374,62 @@
                     playArea.classList.add('danger-flash');
                     setTimeout(() => { playArea.classList.remove('danger-flash'); }, 300);
                     showFloatingText(food.el.offsetLeft + 40, bottomLimit - 70, '漏掉了!', '#D62828');
+                } else {
+                    score += 5; maxPossibleScore += 5;
+                    showFloatingText(food.el.offsetLeft + 40, bottomLimit - 70, '+5', '#2A9D8F');
+                }
+                updateUI();
+                removeFood(food.el);
+            }
+        }
+        requestAnimationFrame(gameLoop);
+    }
+
+    function removeFood(el) {
+        for (let i = 0; i < foods.length; i++) {
+            if (foods[i].el === el) {
+                foods[i].active = false;
+                foods.splice(i, 1);
+                if (el.parentNode) el.parentNode.removeChild(el);
+                break;
+            }
+        }
+    }
+
+    function showFloatingText(x, y, text, color) {
+        const el = document.createElement('div');
+        el.className = 'floating-text'; 
+        el.innerText = text; 
+        el.style.left = x + 'px'; 
+        el.style.top = y + 'px'; 
+        el.style.color = color;
+        playArea.appendChild(el);
+        setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
+    }
+
+    function endGame() {
+        isPlaying = false;
+        clearInterval(gameInterval); clearTimeout(spawnerInterval);
+        endScreen.classList.remove('hidden');
+        finalScoreDisplay.innerText = score;
+        maxScoreDisplay.innerText = maxPossibleScore;
+
+        let ratio = 0;
+        if (maxPossibleScore > 0) {
+             ratio = score / maxPossibleScore;
+        }
+
+        if (ratio >= 0.8) {
+            endTitle.innerText = "🌟 廉能食安之星 🌟"; endTitle.style.color = "#E9C46A";
+            endMessage.innerText = "眼明手快！成功守護餐桌安全！";
+        } else if (ratio >= 0.4) {
+            endTitle.innerText = "👍 稱職的稽查員"; endTitle.style.color = "#2A9D8F";
+            endMessage.innerText = "表現不錯！但別讓黑心食材溜走囉！";
+        } else {
+            endTitle.innerText = "🚨 食安大危機 🚨"; endTitle.style.color = "#E76F51";
+            endMessage.innerText = "漏掉太多了，趕快再挑戰一次！";
+        }
+    }
+</script>
+</body>
+</html>
