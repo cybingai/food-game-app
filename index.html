@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>食安小尖兵 - 究極完整版</title>
+    <title>食安小尖兵 - 完美音效版</title>
     
     <link rel="apple-touch-icon" id="apple-icon" href="">
     <link rel="manifest" id="manifest-link">
@@ -52,27 +52,19 @@
         .stat-box.score { color: #E76F51; }
         .stat-box.time { color: #2A9D8F; }
 
-        /* 當進入最後五秒時，時間會變紅閃爍 */
         .time-warning { color: #D62828 !important; animation: pulse 0.5s infinite; }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
         #play-area {
             flex-grow: 1;
             position: relative;
             overflow: hidden;
             background: #fdfdfd;
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
             background-size: 40px 40px;
             transition: background-color 0.3s;
         }
 
-        /* 衝刺期的背景變色 */
         .sprint-mode { background-color: #fff0f0 !important; }
 
         #tray {
@@ -124,60 +116,32 @@
             white-space: nowrap;
         }
 
-        /* 特殊的螢幕置中大字提示 */
         .center-warning {
             font-size: 48px !important;
             text-shadow: 2px 2px 10px #fff, -2px -2px 10px #fff;
             animation: floatUpCenter 1.5s ease-out forwards !important;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-60px) scale(1.5); opacity: 0; }
-        }
-
-        @keyframes floatUpCenter {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            20% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            100% { transform: translate(-50%, -100px) scale(1.5); opacity: 0; }
-        }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-60px) scale(1.5); opacity: 0; } }
+        @keyframes floatUpCenter { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 80% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 100% { transform: translate(-50%, -100px) scale(1.5); opacity: 0; } }
 
         .danger-flash { background: #ffe6e6 !important; }
 
         .overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 30;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 30; text-align: center; padding: 20px; box-sizing: border-box;
         }
-
         .overlay.hidden { display: none; }
-
         .overlay h1 { color: #2A9D8F; font-size: 48px; margin-bottom: 10px; }
         .overlay p { font-size: 24px; font-weight: bold; line-height: 1.5; color: #444; margin-bottom: 20px; }
 
         .btn {
-            background: #E76F51;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 28px;
-            font-weight: bold;
-            border-radius: 40px;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 5px 10px rgba(231,111,81,0.3);
+            background: #E76F51; color: white; border: none; padding: 15px 40px;
+            font-size: 28px; font-weight: bold; border-radius: 40px; cursor: pointer;
+            margin-top: 10px; box-shadow: 0 5px 10px rgba(231,111,81,0.3);
         }
         .btn:active { transform: translateY(3px); box-shadow: none; }
 
@@ -235,43 +199,48 @@
 </div>
 
 <script>
-    // === 動態生成高品質專屬 APP 圖示 (黃金防護盾+放大鏡+打勾) ===
-    const customIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <defs>
-            <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#a8e063"/><stop offset="100%" stop-color="#2A9D8F"/>
-            </linearGradient>
-            <linearGradient id="shG" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFD166"/><stop offset="100%" stop-color="#E76F51"/>
-            </linearGradient>
-            <filter id="sd">
-                <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#004A3F" flood-opacity="0.4"/>
-            </filter>
-        </defs>
-        <rect width="512" height="512" rx="100" fill="url(#bgG)"/>
-        <path d="M 256 70 C 256 70 390 100 410 120 C 410 270 345 380 256 440 C 167 380 102 270 102 120 C 122 100 256 70 256 70 Z" fill="url(#shG)" filter="url(#sd)"/>
-        <path d="M 256 100 C 256 100 360 125 375 140 C 375 255 320 345 256 395 C 192 345 137 255 137 140 C 152 125 256 100 256 100 Z" fill="#FFF" opacity="0.95"/>
-        <line x1="320" y1="320" x2="410" y2="410" stroke="#333" stroke-width="36" stroke-linecap="round" filter="url(#sd)"/>
-        <circle cx="256" cy="230" r="85" fill="#E0FBFC" stroke="#333" stroke-width="26"/>
-        <path d="M 205 240 L 235 270 L 305 190" fill="none" stroke="#2A9D8F" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`;
-    
-    // 將 SVG 轉為 Data URL 套用到網頁的圖示與安裝檔中
+    // APP 圖示生成
+    const customIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a8e063"/><stop offset="100%" stop-color="#2A9D8F"/></linearGradient><linearGradient id="shG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFD166"/><stop offset="100%" stop-color="#E76F51"/></linearGradient><filter id="sd"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#004A3F" flood-opacity="0.4"/></filter></defs><rect width="512" height="512" rx="100" fill="url(#bgG)"/><path d="M 256 70 C 256 70 390 100 410 120 C 410 270 345 380 256 440 C 167 380 102 270 102 120 C 122 100 256 70 256 70 Z" fill="url(#shG)" filter="url(#sd)"/><path d="M 256 100 C 256 100 360 125 375 140 C 375 255 320 345 256 395 C 192 345 137 255 137 140 C 152 125 256 100 256 100 Z" fill="#FFF" opacity="0.95"/><line x1="320" y1="320" x2="410" y2="410" stroke="#333" stroke-width="36" stroke-linecap="round" filter="url(#sd)"/><circle cx="256" cy="230" r="85" fill="#E0FBFC" stroke="#333" stroke-width="26"/><path d="M 205 240 L 235 270 L 305 190" fill="none" stroke="#2A9D8F" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     const iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(customIconSVG);
     document.getElementById('apple-icon').href = iconUrl;
-    
-    const manifest = {
-        "name": "食安小尖兵",
-        "short_name": "食安小尖兵",
-        "start_url": ".",
-        "display": "standalone",
-        "background_color": "#ffffff",
-        "theme_color": "#56ab2f",
-        "icons": [{"src": iconUrl, "sizes": "512x512", "type": "image/svg+xml"}]
-    };
+    const manifest = {"name": "食安小尖兵", "short_name": "食安小尖兵", "start_url": ".", "display": "standalone", "background_color": "#ffffff", "theme_color": "#56ab2f", "icons": [{"src": iconUrl, "sizes": "512x512", "type": "image/svg+xml"}]};
     const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
     document.getElementById('manifest-link').href = URL.createObjectURL(blob);
-    // ========================================================
+
+    // 音效合成器 (Web Audio API)
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playSound(type) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (type === 'hitBad') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        } else if (type === 'hitGood') {
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+        } else if (type === 'missBad') {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(250, audioCtx.currentTime + 0.15);
+            gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime); gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === 'sprint') {
+            osc.type = 'square'; osc.frequency.setValueAtTime(400, audioCtx.currentTime); osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+    }
 
     const GOOD_FOODS = ['🍎', '🥬', '🥩', '🐟', '🥛', '🌽', '🍊'];
     const BAD_FOODS  = ['🦠', '🧪', '🤢', '🪰', '☠️', '🐛'];
@@ -308,6 +277,7 @@
     }
 
     function startGame() {
+        initAudio(); // 玩家點擊開始按鈕時，解鎖瀏覽器音效限制
         startScreen.classList.add('hidden');
         endScreen.classList.add('hidden');
         score = 0; maxPossibleScore = 0; timeLeft = 30; foods = [];
@@ -321,8 +291,8 @@
             timeLeft--; 
             updateUI();
 
-            // === 衝刺期觸發邏輯 ===
             if (timeLeft === 5) {
+                playSound('sprint'); // 觸發衝刺警報聲
                 showCenterWarning('🔥極限衝刺🔥');
                 timeBox.classList.add('time-warning');
                 playArea.classList.add('sprint-mode');
@@ -355,14 +325,12 @@
         el.style.left = Math.floor(Math.random() * maxX) + 'px';
         el.style.top = '-80px';
         
-        // === 速度計算邏輯 ===
         let speedMultiplier = 1 + ((30 - timeLeft) / 30) * 1.2; 
         let nextSpawnTime = Math.max(300, 700 - (30 - timeLeft) * 15);
 
-        // 如果進入最後 5 秒衝刺期
         if (timeLeft <= 5) {
-            speedMultiplier = 2.5; // 強制 2.5 倍速狂降
-            nextSpawnTime = Math.max(100, Math.random() * 200); // 生成間隔縮短
+            speedMultiplier = 2.5; 
+            nextSpawnTime = Math.max(100, Math.random() * 200); 
         }
 
         const speed = (3 + Math.random() * 3) * speedMultiplier;
@@ -388,9 +356,11 @@
 
         if (isBad) {
             score += 10; maxPossibleScore += 10;
+            playSound('hitBad'); // 播放打擊正確音效
             showFloatingText(x, y, '+10', '#E76F51');
         } else {
             score -= 10; maxPossibleScore += 5;
+            playSound('hitGood'); // 播放打錯警告音效
             showFloatingText(x, y, '-10', '#555');
         }
 
@@ -412,6 +382,7 @@
             if (food.yPos > bottomLimit - 50) {
                 if (food.isBad) {
                     score -= 5; maxPossibleScore += 10;
+                    playSound('missBad'); // 播放漏掉警告音效
                     playArea.classList.add('danger-flash');
                     setTimeout(() => { playArea.classList.remove('danger-flash'); }, 300);
                     showFloatingText(food.el.offsetLeft + 40, bottomLimit - 70, '漏掉了!', '#D62828');
